@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <meta charset="utf-8">
+    <title id="title">{{variable2}}</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script>
+    var myEntraceTotal = 0;
+    var Entered = 0;
+    var Exited = 0;
+    $(function() {
+      $('#minus').bind('click', function() {
+        $.getJSON('/minus', {
+          index: $("#title").html()
+        }, function(data) {
+          $("#sum").text(data.result);
+          Exited++;
+          myEntraceTotal --;
+          $("#exited").text(Exited);
+          $("#myTotal").text(myEntraceTotal);
+        });
+        return false;
+      });
+    });
+
+    $(function() {
+      $('#plus').bind('click', function() {
+        $.getJSON('/plus', {
+          index: $("#title").html()
+        }, function(data) {
+          Entered++;
+          myEntraceTotal ++;
+          $("#entered").text(Entered);
+          $("#myTotal").text(myEntraceTotal);
+
+          $("#sum").text(data.result)
+        });
+        return false;
+      });
+    });
+
+    $(function() {
+      window.setInterval( function(){
+        $.getJSON('/refresh', {
+          index: $("#title").html()
+        }, function(data) {
+          $("#sum").text(data.result)
+        });
+        return false;
+      }, 10000);
+    });
+    </script>
+  </head>
+  <body>
+    <p id="sum" style="text-align:center">{{ variable }}</p>
+    <br>
+    <div style="text-align:center" >MY ENTERY: <p id="myTotal" style="text-align:center">0<p> ENTERED: <p id="entered" style="text-align:center">0<p> EXITED: <p id="exited" style="text-align:center">0<p></div>
+
+
+    <button id="minus" type="submit" style="float: left"class="btn btn-outline-primary btn-lg">-</button>
+    <button id="plus" type="submit" style="float: right" class="btn btn-outline-danger btn-lg">+</button>
+  </body>
+</html>
